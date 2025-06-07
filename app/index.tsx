@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, SafeAreaView } from "react-native";
 import { Link } from "expo-router";
 
-import EventSummaryList from "@/components/EventSummaryList";
+import EventSummaryList from "@/components/EventSummaryList/EventSummaryList";
 
 export default function Index() {
     return (
