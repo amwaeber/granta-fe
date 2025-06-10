@@ -11,9 +11,6 @@ interface props {
   expanded: boolean;
   onToggleExpand: () => void;
 }
-// type Props = {
-//   eventData: EventSummary;
-// };
 
 export default function EventSummaryView ({
   eventData,
@@ -85,7 +82,7 @@ const styles = StyleSheet.create({
 
     },
     text: {
-        fontWeight: '600',
+        fontSize: 14,
         marginBottom: 6,
         color: '#333',
         fontFamily: 'Verdana, sans-serif',

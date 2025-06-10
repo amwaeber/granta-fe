@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {EventSummary} from "@/types/eventSummary.dto";
-import {ActivityIndicator, FlatList, StyleSheet, Text} from "react-native";
+import {ActivityIndicator, FlatList, StyleSheet, Text, View} from "react-native";
 import EventSummaryView from "@/components/EventSummaryView/EventSummaryView";
 import {API_URL} from "@/config";
 import {buildListWithHeaders} from "@/utils/buildListWithHeaders";
@@ -51,38 +51,59 @@ export default function EventSummaryList () {
         setRefreshing(false);
     };
 
-    // if (loading) {
-    //     return <ActivityIndicator size="large" style={{marginTop: 50}}/>;
-    // }
-
-    const itemsWithHeaders = buildListWithHeaders(events);
+    const {itemsWithHeaders, stickyHeaderIndices} = useMemo(() => {
+        const baseItems = buildListWithHeaders(events);
+        const items = [
+            { type: "permanentHeader" as const },
+            ...baseItems
+        ];
+        const indices = [0, ...items
+            .map((item, index) => (item.type === "header" ? index : null))
+            .filter((index): index is number => index !== null)];
+        console.log(indices);
+        return {itemsWithHeaders: items, stickyHeaderIndices: indices};
+    }, [events]);
 
     return (
         <FlatList
             data={itemsWithHeaders}
-            keyExtractor={(item) =>
-                item.type === 'header' ? `header-${item.date}` : `event-${item.event.id.toString()}`
-            }
+            keyExtractor={(item) => {
+                if (item.type === "permanentHeader") return "sticky-invisible";
+                if (item.type === "header") return `header-${item.date}`;
+                if (item.type === "event") return `event-${item.event.id}`;
+                return "empty";
+            }}
             contentContainerStyle={styles.listContainer}
+            stickyHeaderIndices={stickyHeaderIndices}
             renderItem={({item}) => {
-                if (item.type === 'header') {
+                if (item.type === "permanentHeader") { // workaround for stickyHeader on Android
                     return (
-                        <Text style={styles.dateHeader}>
-                            {item.date}
-                        </Text>
+                        <View style={{ height: 1 }} />
+                    );
+                } else if (item.type === 'header') {
+                    return (
+                        <View style={styles.stickyHeaderContainer}>
+                            <Text style={styles.dateHeader}>
+                                {item.date}
+                            </Text>
+                        </View>
                     );
                 } else {
                     return (
-                        <EventSummaryView
-                            eventData={item.event}
-                            expanded={expandedEventId === item.event.id}
-                            onToggleExpand={() => handleToggleExpand(item.event.id)}
-                        />
+                        <View style={styles.eventContainer}>
+                            <EventSummaryView
+                                eventData={item.event}
+                                expanded={expandedEventId === item.event.id}
+                                onToggleExpand={() => handleToggleExpand(item.event.id)}
+                            />
+                        </View>
                     );
                 }
             }}
             ListEmptyComponent={<Text style={styles.emptyText}>No events found.</Text>}
-            ListFooterComponent={loading && !refreshing ? <ActivityIndicator size="small" style={{ margin: 10 }} /> : null}
+            ListFooterComponent={
+                loading && !refreshing ? <ActivityIndicator size="small" style={{margin: 10}}/> : null
+            }
             onEndReached={handleLoadMore}
             onEndReachedThreshold={0.5}
             refreshing={refreshing}
@@ -105,10 +126,19 @@ const styles = StyleSheet.create({
         color: '#333',
         fontFamily: 'Verdana, sans-serif',
     },
+    stickyHeaderContainer: {
+        backgroundColor: '#555',
+        paddingVertical: 6,
+        paddingHorizontal: 10,
+        zIndex: 10,
+    },
     dateHeader: {
-        fontWeight: '600',
-        marginBottom: 6,
+        fontSize: 18,
+        fontWeight: 'bold',
         color: '#fff',
         fontFamily: 'Verdana, sans-serif',
+    },
+    eventContainer: {
+        // Safe wrapper View required for FlatList stickyHeaderIndices stability
     },
 });

@@ -1,9 +1,10 @@
 import { EventSummary } from '@/types/eventSummary.dto';
 import {dateFormatDDMMMYYYY} from "@/utils/dateFormatDDMMMYYYY";
 
-type ListItem =
+export type ListItem =
   | { type: 'header'; date: string }
-  | { type: 'event'; event: EventSummary };
+  | { type: 'event'; event: EventSummary }
+  | { type: "permanentHeader" };
 
 export function buildListWithHeaders(events: EventSummary[]): ListItem[] {
 
