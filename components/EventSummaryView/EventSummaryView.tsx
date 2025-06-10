@@ -1,15 +1,40 @@
-import {View, StyleSheet, Text} from "react-native";
+import {StyleSheet, TouchableOpacity, Text} from "react-native";
 import {EventSummary} from "@/types/eventSummary.dto";
+import { Event } from '@/types/event.dto';
 import {dateFormatDDMMMYYYY} from "@/utils/dateFormatDDMMMYYYY";
 import {dateFormatHHMM} from "@/utils/dateFormatHHMM";
+import {useEffect, useState} from "react";
+import {API_URL} from "@/config";
 
-type Props = {
+// type Props = {
+//   eventData: EventSummary;
+// };
+
+export default function EventSummaryView ({
+  eventData,
+  expanded,
+  onToggleExpand
+}: {
   eventData: EventSummary;
-};
+  expanded: boolean;
+  onToggleExpand: () => void;
+}) {
+    const [fullEvent, setFullEvent] = useState<Event | null>(null);
 
-export default function EventSummaryView ({ eventData }: Props) {
+    useEffect(() => {
+        if (expanded && !fullEvent) {
+            // Fetch full event details on expand
+            const fetchFullEvent = async () => {
+                const response = await fetch(`${API_URL}/events/${eventData.id}/`);
+                const data = await response.json();
+                setFullEvent(data);
+            };
+            fetchFullEvent();
+        }
+    }, [expanded, eventData.id, fullEvent]);
+
     return (
-        <View style={styles.container}>
+        <TouchableOpacity onPress={onToggleExpand} style={styles.container}>
             <Text style={styles.text}>{eventData?.summary}</Text>
             <Text style={styles.text}>{dateFormatDDMMMYYYY(eventData?.startTime)}</Text>
             <Text style={styles.text}>Start: {dateFormatHHMM(eventData?.startTime)}</Text>
@@ -17,7 +42,12 @@ export default function EventSummaryView ({ eventData }: Props) {
                 <Text style={styles.text}>End: {dateFormatHHMM(eventData.endTime)}</Text>
             )}
             <Text style={styles.text}>{eventData?.location}</Text>
-        </View>
+            {expanded && fullEvent && (
+                <>
+                    <Text>{fullEvent.description}</Text>
+                </>
+            )}
+        </TouchableOpacity>
     );
 }
 
