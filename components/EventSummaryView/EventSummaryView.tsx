@@ -1,5 +1,7 @@
 import {View, StyleSheet, Text} from "react-native";
 import {EventSummary} from "@/types/eventSummary.dto";
+import {dateFormatDDMMMYYYY} from "@/utils/dateFormatDDMMMYYYY";
+import {dateFormatHHMM} from "@/utils/dateFormatHHMM";
 
 type Props = {
   eventData: EventSummary;
@@ -9,9 +11,11 @@ export default function EventSummaryView ({ eventData }: Props) {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>{eventData?.summary}</Text>
-            <Text style={styles.text}>{eventData?.date}</Text>
-            <Text style={styles.text}>{eventData?.startTime}</Text>
-            <Text style={styles.text}>{eventData?.endTime}</Text>
+            <Text style={styles.text}>{dateFormatDDMMMYYYY(eventData?.startTime)}</Text>
+            <Text style={styles.text}>Start: {dateFormatHHMM(eventData?.startTime)}</Text>
+            {eventData?.endTime && (
+                <Text style={styles.text}>End: {dateFormatHHMM(eventData.endTime)}</Text>
+            )}
             <Text style={styles.text}>{eventData?.location}</Text>
         </View>
     );
