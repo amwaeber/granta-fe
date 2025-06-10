@@ -1,11 +1,16 @@
-import {StyleSheet, TouchableOpacity, Text} from "react-native";
+import {Animated, StyleSheet, TouchableOpacity, Text} from "react-native";
 import {EventSummary} from "@/types/eventSummary.dto";
 import { Event } from '@/types/event.dto';
 import {dateFormatDDMMMYYYY} from "@/utils/dateFormatDDMMMYYYY";
 import {dateFormatHHMM} from "@/utils/dateFormatHHMM";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {API_URL} from "@/config";
 
+interface props {
+  eventData: EventSummary;
+  expanded: boolean;
+  onToggleExpand: () => void;
+}
 // type Props = {
 //   eventData: EventSummary;
 // };
@@ -14,51 +19,68 @@ export default function EventSummaryView ({
   eventData,
   expanded,
   onToggleExpand
-}: {
-  eventData: EventSummary;
-  expanded: boolean;
-  onToggleExpand: () => void;
-}) {
+}: props) {
     const [fullEvent, setFullEvent] = useState<Event | null>(null);
+    const animation = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         if (expanded && !fullEvent) {
-            // Fetch full event details on expand
             const fetchFullEvent = async () => {
-                const response = await fetch(`${API_URL}/events/${eventData.id}/`);
-                const data = await response.json();
-                setFullEvent(data);
+                try {
+                    const response = await fetch(`${API_URL}/events/${eventData.id}/`);
+                    const data = await response.json();
+                    setFullEvent(data);
+                } catch (err) {
+                    console.error('Error fetching full event:', err);
+                }
             };
             fetchFullEvent();
         }
-    }, [expanded, eventData.id, fullEvent]);
+
+        Animated.timing(animation, {
+            toValue: expanded ? 1 : 0,
+            duration: 300,
+            useNativeDriver: false,
+        }).start();
+    }, [expanded, eventData.id, fullEvent, animation]);
+
+    const maxHeight = animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [100, 250], // adjust max expanded height here
+    });
+
+    const opacity = animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+    });
 
     return (
-        <TouchableOpacity onPress={onToggleExpand} style={styles.container}>
-            <Text style={styles.text}>{eventData?.summary}</Text>
-            <Text style={styles.text}>{dateFormatDDMMMYYYY(eventData?.startTime)}</Text>
-            <Text style={styles.text}>Start: {dateFormatHHMM(eventData?.startTime)}</Text>
-            {eventData?.endTime && (
-                <Text style={styles.text}>End: {dateFormatHHMM(eventData.endTime)}</Text>
+        <Animated.View style={[styles.card, {maxHeight}]}>
+            <TouchableOpacity onPress={onToggleExpand}>
+                <Text style={styles.text}>{eventData?.summary}</Text>
+                <Text style={styles.text}>{dateFormatDDMMMYYYY(eventData?.startTime)}</Text>
+                <Text style={styles.text}>Start: {dateFormatHHMM(eventData?.startTime)}</Text>
+                {eventData?.endTime && (
+                    <Text style={styles.text}>End: {dateFormatHHMM(eventData.endTime)}</Text>
+                )}
+                <Text style={styles.text}>{eventData?.location}</Text>
+            </TouchableOpacity>
+            {fullEvent && (
+                <Animated.View style={{opacity, marginTop: 10}}>
+                    {fullEvent.description && <Text>{fullEvent.description}</Text>}
+                </Animated.View>
             )}
-            <Text style={styles.text}>{eventData?.location}</Text>
-            {expanded && fullEvent && (
-                <>
-                    <Text>{fullEvent.description}</Text>
-                </>
-            )}
-        </TouchableOpacity>
+        </Animated.View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    card: {
         padding: 10,
         width: '100%',
         marginBottom: 1,
         backgroundColor: '#fff',
         borderWidth: 1,
-        // borderRadius: 8,
         borderColor: '#bbb',
 
     },

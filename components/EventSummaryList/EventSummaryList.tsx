@@ -3,6 +3,7 @@ import {EventSummary} from "@/types/eventSummary.dto";
 import {ActivityIndicator, FlatList, StyleSheet, Text} from "react-native";
 import EventSummaryView from "@/components/EventSummaryView/EventSummaryView";
 import {API_URL} from "@/config";
+import {buildListWithHeaders} from "@/utils/buildListWithHeaders";
 
 
 export default function EventSummaryList () {
@@ -54,18 +55,32 @@ export default function EventSummaryList () {
     //     return <ActivityIndicator size="large" style={{marginTop: 50}}/>;
     // }
 
+    const itemsWithHeaders = buildListWithHeaders(events);
+
     return (
         <FlatList
-            data={events}
-            keyExtractor={(item) => item.id.toString()}
+            data={itemsWithHeaders}
+            keyExtractor={(item) =>
+                item.type === 'header' ? `header-${item.date}` : `event-${item.event.id.toString()}`
+            }
             contentContainerStyle={styles.listContainer}
-            renderItem={({ item }) => (
-                <EventSummaryView
-                    eventData={item}
-                    expanded={expandedEventId === item.id}
-                    onToggleExpand={() => handleToggleExpand(item.id)}
-                />
-            )}
+            renderItem={({item}) => {
+                if (item.type === 'header') {
+                    return (
+                        <Text style={styles.dateHeader}>
+                            {item.date}
+                        </Text>
+                    );
+                } else {
+                    return (
+                        <EventSummaryView
+                            eventData={item.event}
+                            expanded={expandedEventId === item.event.id}
+                            onToggleExpand={() => handleToggleExpand(item.event.id)}
+                        />
+                    );
+                }
+            }}
             ListEmptyComponent={<Text style={styles.emptyText}>No events found.</Text>}
             ListFooterComponent={loading && !refreshing ? <ActivityIndicator size="small" style={{ margin: 10 }} /> : null}
             onEndReached={handleLoadMore}
@@ -88,6 +103,12 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginBottom: 6,
         color: '#333',
+        fontFamily: 'Verdana, sans-serif',
+    },
+    dateHeader: {
+        fontWeight: '600',
+        marginBottom: 6,
+        color: '#fff',
         fontFamily: 'Verdana, sans-serif',
     },
 });
