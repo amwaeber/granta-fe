@@ -1,5 +1,5 @@
 import { EventSummary } from '@/types/eventSummary.dto';
-import {dateFormatDDMMMYYYY} from "@/utils/dateFormatDDMMMYYYY";
+import {dateFormatDDMonthYYYY} from "@/utils/dateFormatDDMonthYYYY";
 
 export type ListItem =
   | { type: 'header'; date: string }
@@ -12,7 +12,7 @@ export function buildListWithHeaders(events: EventSummary[]): ListItem[] {
   let lastDate = '';
 
   for (const event of events) {
-    const eventDate = dateFormatDDMMMYYYY(event?.startTime);
+    const eventDate = dateFormatDDMonthYYYY(event?.startTime);
 
     if (eventDate !== lastDate) {
       list.push({

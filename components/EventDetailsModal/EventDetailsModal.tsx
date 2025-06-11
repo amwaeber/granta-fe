@@ -11,7 +11,7 @@ import {
     Platform, Pressable,
 } from 'react-native';
 import {Event} from "@/types/event.dto";
-import {dateFormatDDMMMYYYY} from "@/utils/dateFormatDDMMMYYYY";
+import {dateFormatDDMonthYYYY} from "@/utils/dateFormatDDMonthYYYY";
 import {dateFormatHHMM} from "@/utils/dateFormatHHMM";
 
 
@@ -45,12 +45,14 @@ export default function EventDetailsModal({
                         <ScrollView contentContainerStyle={styles.scrollContent}>
                             {!event ? (<ActivityIndicator size="small" style={{margin: 10}}/>) : (
                                 <>
-                                    <Text style={styles.text}>{event?.summary}</Text>
-                                    <Text style={styles.text}>{dateFormatDDMMMYYYY(event.startTime)}</Text>
-                                    <Text style={styles.text}>Start: {dateFormatHHMM(event.startTime)}</Text>
-                                    {event?.endTime && (
-                                        <Text style={styles.text}>End: {dateFormatHHMM(event.endTime)}</Text>
-                                    )}
+                                    <Text style={styles.title}>{event?.summary}</Text>
+                                    <Text style={styles.date}>{dateFormatDDMonthYYYY(event.startTime)}</Text>
+                                    <View style={styles.timeRow}>
+                                        <Text style={styles.time}>Start: {dateFormatHHMM(event.startTime)}</Text>
+                                        {event?.endTime && (
+                                            <Text style={styles.time}>End: {dateFormatHHMM(event.endTime)}</Text>
+                                        )}
+                                    </View>
                                     <Text style={styles.text}>{event?.location}</Text>
                                     <Text style={styles.text}>{event?.description}</Text>
                                 </>
@@ -91,6 +93,29 @@ const styles = StyleSheet.create({
     },
     scrollContent: {
         paddingBottom: 20,
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 8,
+        color: '#666',
+    },
+    date: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 6,
+        color: '#999',
+    },
+    timeRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 6,
+    },
+    time: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        marginBottom: 6,
+        color: '#666',
     },
     text: {
         fontSize: 14,
