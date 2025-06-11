@@ -6,7 +6,9 @@ import {
     Button,
     ActivityIndicator,
     ScrollView,
-    Dimensions
+    Dimensions,
+    KeyboardAvoidingView,
+    Platform, Pressable,
 } from 'react-native';
 import {Event} from "@/types/event.dto";
 import {dateFormatDDMMMYYYY} from "@/utils/dateFormatDDMMMYYYY";
@@ -30,36 +32,55 @@ export default function EventDetailsModal({
 
     return (
         <Modal visible={visible} animationType="slide" transparent={true}>
-            <View style={styles.overlay}>
-                <View style={styles.modal}>
-                    <ScrollView contentContainerStyle={styles.scrollContent}>
-                        {!event ? (<ActivityIndicator size="small" style={{margin: 10}}/>) : (
-                            <>
-                                <Text style={styles.text}>{event?.summary}</Text>
-                                <Text style={styles.text}>{dateFormatDDMMMYYYY(event.startTime)}</Text>
-                                <Text style={styles.text}>Start: {dateFormatHHMM(event.startTime)}</Text>
-                                {event?.endTime && (
-                                    <Text style={styles.text}>End: {dateFormatHHMM(event.endTime)}</Text>
-                                )}
-                                <Text style={styles.text}>{event?.location}</Text>
-                                <Text style={styles.text}>{event?.description}</Text>
-                            </>
-                        )}
-                        <Button title="Close" onPress={onClose}/>
-                    </ScrollView>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                style={styles.fullscreen}
+            >
+                <View style={styles.overlay}>
+                    {/* Top tap area */}
+                    <Pressable style={styles.dismissZone} onPress={onClose}/>
+
+                    {/* Modal content */}
+                    <View style={styles.modal}>
+                        <ScrollView contentContainerStyle={styles.scrollContent}>
+                            {!event ? (<ActivityIndicator size="small" style={{margin: 10}}/>) : (
+                                <>
+                                    <Text style={styles.text}>{event?.summary}</Text>
+                                    <Text style={styles.text}>{dateFormatDDMMMYYYY(event.startTime)}</Text>
+                                    <Text style={styles.text}>Start: {dateFormatHHMM(event.startTime)}</Text>
+                                    {event?.endTime && (
+                                        <Text style={styles.text}>End: {dateFormatHHMM(event.endTime)}</Text>
+                                    )}
+                                    <Text style={styles.text}>{event?.location}</Text>
+                                    <Text style={styles.text}>{event?.description}</Text>
+                                </>
+                            )}
+                            <Button title="Close" onPress={onClose}/>
+                        </ScrollView>
+                    </View>
+
+                    {/* Bottom tap area */}
+                    <Pressable style={styles.dismissZone} onPress={onClose}/>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </Modal>
     );
 };
 
 const styles = StyleSheet.create({
+    fullscreen: {
+        flex: 1,
+    },
     overlay: {
         flex: 1,
-        justifyContent: 'center',
         backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingVertical: MODAL_VERTICAL_MARGIN,
+    },
+
+    dismissZone: {
+        height: MODAL_VERTICAL_MARGIN,
+        width: '100%',
     },
     modal: {
         backgroundColor: 'white',
@@ -68,7 +89,6 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 8,
     },
-
     scrollContent: {
         paddingBottom: 20,
     },
