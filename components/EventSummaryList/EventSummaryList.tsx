@@ -1,7 +1,9 @@
 import {useEffect, useMemo, useState} from "react";
 import {EventSummary} from "@/types/eventSummary.dto";
+import {Event} from "@/types/event.dto";
 import {ActivityIndicator, FlatList, StyleSheet, Text, View} from "react-native";
 import EventSummaryView from "@/components/EventSummaryView/EventSummaryView";
+import EventDetailsModal from "@/components/EventDetailsModal/EventDetailsModal";
 import {API_URL} from "@/config";
 import {buildListWithHeaders} from "@/utils/buildListWithHeaders";
 
@@ -12,7 +14,8 @@ export default function EventSummaryList () {
     const [nextPageUrl, setNextPageUrl] = useState<string | null>(`${API_URL}/events/`);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
-    const [expandedEventId, setExpandedEventId] = useState<string | null>(null);
+    const [eventModal, setEventModal] = useState<boolean>(false);
+    const [selectedEventDetails, setSelectedEventDetails] = useState<Event>();
 
     const fetchItems = async (url: string, replace = false): Promise<void> => {
         setLoading(true);
@@ -32,22 +35,37 @@ export default function EventSummaryList () {
         fetchItems(`${API_URL}/events/`, true);
     }, []);
 
+    const fetchEventDetails = async (eventId: string) => {
+        setLoading(true);
+        try {
+            const response = await fetch(`${API_URL}/events/${eventId}/`);
+            const data = await response.json();
+            setSelectedEventDetails(data);
+        } catch (err) {
+            console.error('Error fetching event:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleLoadMore = () => {
         if (!loading && nextPageUrl) {
             fetchItems(nextPageUrl);
         }
     };
 
-    const handleToggleExpand = (eventId: string) => {
-        setExpandedEventId(prev =>
-            prev === eventId ? null : eventId
-        );
+    const handlePress = async (eventId: string) => {
+        await fetchEventDetails(eventId); // wait for data
+        setEventModal(true); // only open modal once data is loaded
+    };
+
+    const closeModal = () => {
+        setEventModal(false);
     };
 
     const handleRefresh = async () => {
         setRefreshing(true);
         await fetchItems(`${API_URL}/events/`, true);
-        setExpandedEventId(null);
         setRefreshing(false);
     };
 
@@ -60,55 +78,62 @@ export default function EventSummaryList () {
         const indices = [0, ...items
             .map((item, index) => (item.type === "header" ? index : null))
             .filter((index): index is number => index !== null)];
-        console.log(indices);
         return {itemsWithHeaders: items, stickyHeaderIndices: indices};
     }, [events]);
 
     return (
-        <FlatList
-            data={itemsWithHeaders}
-            keyExtractor={(item) => {
-                if (item.type === "permanentHeader") return "sticky-invisible";
-                if (item.type === "header") return `header-${item.date}`;
-                if (item.type === "event") return `event-${item.event.id}`;
-                return "empty";
-            }}
-            contentContainerStyle={styles.listContainer}
-            stickyHeaderIndices={stickyHeaderIndices}
-            renderItem={({item}) => {
-                if (item.type === "permanentHeader") { // workaround for stickyHeader on Android
-                    return (
-                        <View style={{ height: 1 }} />
-                    );
-                } else if (item.type === 'header') {
-                    return (
-                        <View style={styles.stickyHeaderContainer}>
-                            <Text style={styles.dateHeader}>
-                                {item.date}
-                            </Text>
-                        </View>
-                    );
-                } else {
-                    return (
-                        <View style={styles.eventContainer}>
-                            <EventSummaryView
-                                eventData={item.event}
-                                expanded={expandedEventId === item.event.id}
-                                onToggleExpand={() => handleToggleExpand(item.event.id)}
-                            />
-                        </View>
-                    );
+        <View>
+            <FlatList
+                data={itemsWithHeaders}
+                keyExtractor={(item) => {
+                    if (item.type === "permanentHeader") return "sticky-invisible";
+                    if (item.type === "header") return `header-${item.date}`;
+                    if (item.type === "event") return `event-${item.event.id}`;
+                    return "empty";
+                }}
+                contentContainerStyle={styles.listContainer}
+                stickyHeaderIndices={stickyHeaderIndices}
+                renderItem={({item}) => {
+                    if (item.type === "permanentHeader") { // workaround for stickyHeader on Android
+                        return (
+                            <View style={{ height: 1 }} />
+                        );
+                    } else if (item.type === 'header') {
+                        return (
+                            <View style={styles.stickyHeaderContainer}>
+                                <Text style={styles.dateHeader}>
+                                    {item.date}
+                                </Text>
+                            </View>
+                        );
+                    } else {
+                        return (
+                            <View style={styles.eventContainer}>
+                                <EventSummaryView
+                                    eventData={item.event}
+                                    onPress={() => handlePress(item.event.id)}
+                                />
+                            </View>
+                        );
+                    }
+                }}
+                ListEmptyComponent={<Text style={styles.emptyText}>No events found.</Text>}
+                ListFooterComponent={
+                    loading && !refreshing ? <ActivityIndicator size="small" style={{margin: 10}}/> : null
                 }
-            }}
-            ListEmptyComponent={<Text style={styles.emptyText}>No events found.</Text>}
-            ListFooterComponent={
-                loading && !refreshing ? <ActivityIndicator size="small" style={{margin: 10}}/> : null
-            }
-            onEndReached={handleLoadMore}
-            onEndReachedThreshold={0.5}
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
-        />
+                onEndReached={handleLoadMore}
+                onEndReachedThreshold={0.5}
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+            />
+            {eventModal && selectedEventDetails && (
+                <EventDetailsModal
+                    event={selectedEventDetails}
+                    visible={eventModal}
+                    onClose={closeModal}
+                />
+            )}
+        </View>
     );
 }
 
