@@ -139,7 +139,7 @@ export default function EventSummaryList () {
 
 const styles = StyleSheet.create({
     listContainer: {
-        padding: 20,
+        // padding: 10,
         width: '100%',
     },
     emptyText: {
