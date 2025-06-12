@@ -11,8 +11,10 @@ import {
     Platform, Pressable,
 } from 'react-native';
 import {Event} from "@/types/event.dto";
-import {dateFormatDDMonthYYYY} from "@/utils/dateFormatDDMonthYYYY";
-import {dateFormatHHMM} from "@/utils/dateFormatHHMM";
+import {
+    dateFormatDDMonthYYYY,
+    dateFormatHHMM
+} from "@/utils/dateFormats";
 
 
 interface props {

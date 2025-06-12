@@ -1,7 +1,14 @@
-import {StyleSheet, TouchableOpacity, Text, View} from "react-native";
+import {
+    StyleSheet,
+    TouchableOpacity,
+    Text,
+    View
+} from "react-native";
 import {EventSummary} from "@/types/eventSummary.dto";
-import {dateFormatDDMonthYYYY} from "@/utils/dateFormatDDMonthYYYY";
-import {dateFormatHHMM} from "@/utils/dateFormatHHMM";
+import {
+    dateFormatDDMonthYYYY,
+    dateFormatHHMM
+} from "@/utils/dateFormats";
 
 interface props {
   eventData: EventSummary;
