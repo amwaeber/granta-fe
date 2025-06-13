@@ -33,7 +33,7 @@ export default function EventDetailsModal({
                                           }: props) {
 
     return (
-        <Modal visible={visible} animationType="slide" transparent={true}>
+        <Modal visible={visible} animationType="fade" transparent={true}>
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                 style={styles.fullscreen}

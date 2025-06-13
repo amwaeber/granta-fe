@@ -5,9 +5,7 @@ import EventSummaryList from "@/components/EventSummaryList/EventSummaryList";
 export default function Index() {
     return (
         <View style={styles.container}>
-            <SafeAreaView style={{flex: 1}}>
-                <EventSummaryList/>
-            </SafeAreaView>
+            <EventSummaryList/>
         </View>
     );
 }
@@ -15,19 +13,13 @@ export default function Index() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#25292e',
+        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
     },
     text: {
-        color: '#fff',
+        color: '#333',
         fontFamily: 'Verdana, sans-serif',
-    },
-    button: {
-        fontSize: 20,
-        fontFamily: 'Verdana, sans-serif',
-        textDecorationLine: 'underline',
-        color: '#fff',
     },
 })

@@ -96,7 +96,7 @@ export default function EventSummaryList () {
                 renderItem={({item}) => {
                     if (item.type === "permanentHeader") { // workaround for stickyHeader on Android
                         return (
-                            <View style={{ height: 1 }} />
+                            <View style={{ height: 1, backgroundColor: '#62a0b2' }} />
                         );
                     } else if (item.type === 'header') {
                         return (
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Verdana, sans-serif',
     },
     stickyHeaderContainer: {
-        backgroundColor: '#555',
+        backgroundColor: '#62a0b2',
         paddingVertical: 6,
         paddingHorizontal: 10,
         zIndex: 10,
