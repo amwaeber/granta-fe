@@ -10,6 +10,7 @@ import {
     KeyboardAvoidingView,
     Platform, Pressable,
 } from 'react-native';
+import HTMLDescription from "@/components/HTMLDescription/HTMLDescription";
 import {Event} from "@/types/event.dto";
 import {
     dateFormatDDMonthYYYY,
@@ -56,7 +57,11 @@ export default function EventDetailsModal({
                                         )}
                                     </View>
                                     <Text style={styles.text}>{event?.location}</Text>
-                                    <Text style={styles.text}>{event?.description}</Text>
+                                    <Text style={styles.text}>
+                                        {event?.description && (
+                                            <HTMLDescription htmlContent={event?.description} />
+                                        )}
+                                    </Text>
                                 </>
                             )}
                             <Button title="Close" onPress={onClose}/>
