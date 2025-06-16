@@ -39,12 +39,12 @@ export default function EventSummaryView ({
 
 const styles = StyleSheet.create({
     container: {
-        padding: 10,
-        width: '100%',
-        marginBottom: 1,
+        padding: 16,
+        marginBottom: 4,
+        marginLeft: 4,
+        marginRight: 4,
         backgroundColor: '#fff',
-        borderWidth: 1,
-        borderColor: '#bbb',
+        borderRadius: 12,
 
     },
     title: {

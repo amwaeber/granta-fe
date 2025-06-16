@@ -9,10 +9,15 @@ export default function RootLayout() {
                 <Drawer
                     screenOptions={{
                         headerStyle: {
-                            backgroundColor: '#84c2d4',
+                            backgroundColor: '#003FFF',
+                            elevation: 0, // Remove Android shadow
+                            shadowColor: 'transparent', // Remove iOS shadow
+                        },
+                        headerTitleStyle: {
+                            color: '#fff',
                         },
                         headerStatusBarHeight: 0,
-                        headerTintColor: '#333',
+                        headerTintColor: '#fff',
                         drawerActiveTintColor: '#62a0b2',
                         drawerInactiveTintColor: '#333',
                         drawerItemStyle: {
@@ -43,11 +48,11 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#84c2d4',
+        backgroundColor: '#003FFF',
     },
     text: {
         fontSize: 18,
-        color: '#333',
+        color: '#fff',
         marginBottom: 6,
     },
     note: {
