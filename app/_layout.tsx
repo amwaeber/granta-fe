@@ -39,6 +39,13 @@ export default function RootLayout() {
                             title: 'About',
                         }}
                     />
+                    <Drawer.Screen
+                        name="map"
+                        options={{
+                            drawerLabel: 'Map',
+                            title: 'Map',
+                        }}
+                    />
                 </Drawer>
             </SafeAreaView>
         </SafeAreaProvider>
