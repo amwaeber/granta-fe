@@ -3,7 +3,6 @@ import {
     View,
     Text,
     StyleSheet,
-    Button,
     ActivityIndicator,
     ScrollView,
     Dimensions,
@@ -11,6 +10,7 @@ import {
     Platform, Pressable,
 } from 'react-native';
 import HTMLDescription from "@/components/HTMLDescription/HTMLDescription";
+import CloseIcon from "@/assets/icons/x.svg";
 import {Event} from "@/types/event.dto";
 import {
     dateFormatDDMonthYYYY,
@@ -39,37 +39,46 @@ export default function EventDetailsModal({
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                 style={styles.fullscreen}
             >
-                <View style={styles.overlay}>
-                    {/* Top tap area */}
-                    <Pressable style={styles.dismissZone} onPress={onClose}/>
-
-                    {/* Modal content */}
-                    <View style={styles.modal}>
-                        <ScrollView contentContainerStyle={styles.scrollContent}>
-                            {!event ? (<ActivityIndicator size="small" style={{margin: 10}}/>) : (
-                                <>
-                                    <Text style={styles.title}>{event?.summary}</Text>
-                                    <Text style={styles.date}>{dateFormatDDMonthYYYY(event.startTime)}</Text>
-                                    <View style={styles.timeRow}>
-                                        <Text style={styles.time}>Start: {dateFormatHHMM(event.startTime)}</Text>
-                                        {event?.endTime && (
-                                            <Text style={styles.time}>End: {dateFormatHHMM(event.endTime)}</Text>
-                                        )}
-                                    </View>
-                                    <Text style={styles.text}>{event?.location}</Text>
-                                    <Text style={styles.text}>
-                                        {event?.description && (
-                                            <HTMLDescription htmlContent={event?.description} />
-                                        )}
-                                    </Text>
-                                </>
-                            )}
-                            <Button title="Close" onPress={onClose}/>
-                        </ScrollView>
-                    </View>
-
-                    {/* Bottom tap area */}
-                    <Pressable style={styles.dismissZone} onPress={onClose}/>
+                {/* Modal content */}
+                <View style={styles.modalHeader}>
+                    <Pressable
+                        onPress={onClose}
+                        hitSlop={20}
+                        style={{
+                            position: 'absolute',
+                            top: 16,
+                            right: 16,
+                            zIndex: 10,
+                        }}
+                    >
+                        <CloseIcon width={32} height={32} color='#ddd'/>
+                    </Pressable>
+                    {!event ? (<ActivityIndicator size="small" style={{margin: 10}}/>) : (
+                        <View>
+                            <Text style={styles.title}>{event?.summary}</Text>
+                            <Text style={styles.date}>{dateFormatDDMonthYYYY(event.startTime)}</Text>
+                            <View style={styles.timeRow}>
+                                <Text style={styles.time}>Start: {dateFormatHHMM(event.startTime)}</Text>
+                                {event?.endTime && (
+                                    <Text style={styles.time}>End: {dateFormatHHMM(event.endTime)}</Text>
+                                )}
+                            </View>
+                        </View>
+                    )}
+                </View>
+                <View style={styles.modal}>
+                    <ScrollView contentContainerStyle={styles.scrollContent}>
+                        {!event ? (<ActivityIndicator size="small" style={{margin: 10}}/>) : (
+                            <>
+                                <Text style={styles.text}>{event?.location}</Text>
+                                <Text style={styles.text}>
+                                    {event?.description && (
+                                        <HTMLDescription htmlContent={event?.description} />
+                                    )}
+                                </Text>
+                            </>
+                        )}
+                    </ScrollView>
                 </View>
             </KeyboardAvoidingView>
         </Modal>
@@ -80,38 +89,34 @@ const styles = StyleSheet.create({
     fullscreen: {
         flex: 1,
     },
-    overlay: {
+    modal: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
         justifyContent: 'flex-start',
         alignItems: 'center',
-    },
-
-    dismissZone: {
-        height: MODAL_VERTICAL_MARGIN,
-        width: '100%',
-    },
-    modal: {
         backgroundColor: 'white',
-        height: screenHeight - 2 * MODAL_VERTICAL_MARGIN,
-        margin: 20,
-        padding: 20,
-        borderRadius: 8,
+    },
+    modalHeader: {
+        justifyContent: 'flex-start',
+        backgroundColor: '#4C6DFF',
+        padding: 30,
+        paddingTop: 40,
+        paddingBottom: 10,
     },
     scrollContent: {
-        paddingBottom: 20,
+        padding: 20,
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 8,
-        color: '#666',
+        color: '#fff',
+        // maxWidth: '90%',
     },
     date: {
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 6,
-        color: '#999',
+        color: '#ddd',
     },
     timeRow: {
         flexDirection: 'row',
@@ -122,7 +127,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         marginBottom: 6,
-        color: '#666',
+        color: '#ddd',
     },
     text: {
         fontSize: 14,

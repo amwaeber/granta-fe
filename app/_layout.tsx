@@ -1,6 +1,10 @@
 import {Drawer} from 'expo-router/drawer';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {StyleSheet} from "react-native";
+import AboutIcon from "@/assets/icons/info-circle.svg";
+import CalendarIcon from "@/assets/icons/calendar.svg";
+import MapIcon from "@/assets/icons/geo-alt-fill.svg";
+import LogoIcon from "@/assets/icons/logo_inverse.svg";
 
 export default function RootLayout() {
     return (
@@ -8,20 +12,34 @@ export default function RootLayout() {
             <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
                 <Drawer
                     screenOptions={{
+                        headerRight: () => (
+                            <LogoIcon width="48" height="48" marginRight="16" />
+                        ),
                         headerStyle: {
-                            backgroundColor: '#003FFF',
+                            backgroundColor: '#4C6DFF',
                             elevation: 0, // Remove Android shadow
                             shadowColor: 'transparent', // Remove iOS shadow
                         },
                         headerTitleStyle: {
                             color: '#fff',
                         },
+                        headerTitleAlign: 'left',
+                        drawerContentContainerStyle: {
+                            paddingHorizontal: 0,
+                        },
                         headerStatusBarHeight: 0,
                         headerTintColor: '#fff',
-                        drawerActiveTintColor: '#62a0b2',
+                        drawerActiveTintColor: '#4C6DFF',
                         drawerInactiveTintColor: '#333',
                         drawerItemStyle: {
-                            borderRadius: 0, // ✅ remove rounded corners
+                            borderRadius: 0,
+                        },
+                        // drawerStyle: {
+                        //     width: '70%',
+                        // },
+                        drawerLabelStyle: {
+                            fontSize: 18,
+                            fontFamily: 'Verdana, sans-serif',
                         },
                     }}
                 >
@@ -30,6 +48,9 @@ export default function RootLayout() {
                         options={{
                             drawerLabel: 'Events',
                             title: 'Events',
+                            drawerIcon: ({color, size}) => (
+                                <CalendarIcon width={size} height={size} color={color}/>
+                            )
                         }}
                     />
                     <Drawer.Screen
@@ -37,6 +58,9 @@ export default function RootLayout() {
                         options={{
                             drawerLabel: 'About',
                             title: 'About',
+                            drawerIcon: ({color, size}) => (
+                                <AboutIcon width={size} height={size} color={color}/>
+                            )
                         }}
                     />
                     <Drawer.Screen
@@ -44,6 +68,9 @@ export default function RootLayout() {
                         options={{
                             drawerLabel: 'Map',
                             title: 'Map',
+                            drawerIcon: ({color, size}) => (
+                                <MapIcon width={size} height={size} color={color}/>
+                            )
                         }}
                     />
                 </Drawer>
@@ -55,7 +82,7 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#003FFF',
+        backgroundColor: '#4C6DFF',
     },
     text: {
         fontSize: 18,

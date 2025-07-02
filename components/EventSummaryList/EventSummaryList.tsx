@@ -96,7 +96,7 @@ export default function EventSummaryList () {
                 renderItem={({item}) => {
                     if (item.type === "permanentHeader") { // workaround for stickyHeader on Android
                         return (
-                            <View style={{ height: 1, backgroundColor: '#4C6DFF' }} />
+                            <View style={{ height: 1, backgroundColor: '#CCD6FF' }} />
                         );
                     } else if (item.type === 'header') {
                         return (
@@ -140,7 +140,7 @@ export default function EventSummaryList () {
 const styles = StyleSheet.create({
     listContainer: {
         // padding: 10,
-        backgroundColor: '#4C6DFF',
+        backgroundColor: '#CCD6FF',
         width: '100%',
     },
     emptyText: {
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Verdana, sans-serif',
     },
     stickyHeaderContainer: {
-        backgroundColor: '#4C6DFF',
+        backgroundColor: '#CCD6FF',
         paddingVertical: 6,
         paddingHorizontal: 10,
         marginBottom: 4,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     dateHeader: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#fff',
+        color: '#4C6DFF',
         fontFamily: 'Verdana, sans-serif',
     },
     eventContainer: {
