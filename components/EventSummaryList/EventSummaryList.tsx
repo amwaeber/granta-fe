@@ -118,7 +118,11 @@ export default function EventSummaryList () {
                         );
                     }
                 }}
-                ListEmptyComponent={<Text style={styles.emptyText}>No events found.</Text>}
+                ListEmptyComponent={
+                    <Text style={styles.emptyText} testID={'event-summary-list-empty-text'}>
+                        No events found.
+                    </Text>
+                }
                 ListFooterComponent={
                     loading && !refreshing ? <ActivityIndicator size="small" style={{margin: 10}}/> : null
                 }
@@ -126,6 +130,7 @@ export default function EventSummaryList () {
                 onEndReachedThreshold={0.5}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
+                testID={'event-summary-flat-list'}
             />
             {eventModal && selectedEventDetails && (
                 <EventDetailsModal

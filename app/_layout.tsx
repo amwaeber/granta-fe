@@ -1,6 +1,6 @@
 import {Drawer} from 'expo-router/drawer';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-import {StyleSheet} from "react-native";
+import {StyleSheet, View} from "react-native";
 import AboutIcon from "@/assets/icons/info-circle.svg";
 import CalendarIcon from "@/assets/icons/calendar.svg";
 import MapIcon from "@/assets/icons/geo-alt-fill.svg";
@@ -14,7 +14,9 @@ export default function RootLayout() {
                 <Drawer
                     screenOptions={{
                         headerRight: () => (
-                            <LogoIcon width="48" height="48" marginRight="16" />
+                            <View style={{marginRight: 16}}>
+                                <LogoIcon width={48} height={48}/>
+                            </View>
                         ),
                         headerStyle: {
                             backgroundColor: Colors.primary,

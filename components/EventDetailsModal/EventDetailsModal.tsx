@@ -9,7 +9,7 @@ import {
     Platform, Pressable,
 } from 'react-native';
 import HTMLDescription from "@/components/HTMLDescription/HTMLDescription";
-import CloseIcon from "@/assets/icons/x.svg";
+import CloseIcon from "../../assets/icons/x.svg";
 import {Event} from "@/types/event.dto";
 import {
     dateFormatDDMonthYYYY,
@@ -40,6 +40,8 @@ export default function EventDetailsModal({
                 <View style={styles.modalHeader}>
                     <Pressable
                         onPress={onClose}
+                        accessibilityRole="button"
+                        accessibilityLabel="Close"
                         hitSlop={20}
                         style={{
                             position: 'absolute',
@@ -50,7 +52,7 @@ export default function EventDetailsModal({
                     >
                         <CloseIcon width={32} height={32} color={Colors.offWhite}/>
                     </Pressable>
-                    {!event ? (<ActivityIndicator size="small" style={{margin: 10}}/>) : (
+                    {!event ? (<ActivityIndicator size="small" style={{margin: 10}} testID="activity-indicator"/>) : (
                         <View>
                             <Text style={styles.title}>{event?.summary}</Text>
                             <Text style={styles.date}>{dateFormatDDMonthYYYY(event.startTime)}</Text>
@@ -65,7 +67,7 @@ export default function EventDetailsModal({
                 </View>
                 <View style={styles.modal}>
                     <ScrollView contentContainerStyle={styles.scrollContent}>
-                        {!event ? (<ActivityIndicator size="small" style={{margin: 10}}/>) : (
+                        {!event ? (<ActivityIndicator size="small" style={{margin: 10}} testID="activity-indicator"/>) : (
                             <>
                                 <Text style={styles.text}>{event?.location}</Text>
                                 <Text style={styles.text}>

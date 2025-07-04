@@ -22,7 +22,7 @@ export default function EventSummaryView ({
 }: props) {
 
     return (
-        <View style={styles.container}>
+        <View style={styles.container} testID={'event-summary-view'}>
             <TouchableOpacity onPress={onPress}>
                 <Text style={styles.title}>{eventData?.summary}</Text>
                 <Text style={styles.date}>{dateFormatDDMonthYYYY(eventData?.startTime)}</Text>
