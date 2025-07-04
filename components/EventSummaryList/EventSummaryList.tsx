@@ -6,6 +6,7 @@ import EventSummaryView from "@/components/EventSummaryView/EventSummaryView";
 import EventDetailsModal from "@/components/EventDetailsModal/EventDetailsModal";
 import {API_URL} from "@/config";
 import {buildListWithHeaders} from "@/utils/buildListWithHeaders";
+import Colors from "@/constants/colors";
 
 
 export default function EventSummaryList () {
@@ -96,7 +97,7 @@ export default function EventSummaryList () {
                 renderItem={({item}) => {
                     if (item.type === "permanentHeader") { // workaround for stickyHeader on Android
                         return (
-                            <View style={{ height: 1, backgroundColor: '#CCD6FF' }} />
+                            <View style={{ height: 1, backgroundColor: Colors.secondary }} />
                         );
                     } else if (item.type === 'header') {
                         return (
@@ -139,8 +140,7 @@ export default function EventSummaryList () {
 
 const styles = StyleSheet.create({
     listContainer: {
-        // padding: 10,
-        backgroundColor: '#CCD6FF',
+        backgroundColor: Colors.secondary,
         width: '100%',
     },
     emptyText: {
@@ -149,11 +149,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
         marginBottom: 6,
-        color: '#333',
+        color: Colors.textPrimary,
         fontFamily: 'Verdana, sans-serif',
     },
     stickyHeaderContainer: {
-        backgroundColor: '#CCD6FF',
+        backgroundColor: Colors.secondary,
         paddingVertical: 6,
         paddingHorizontal: 10,
         marginBottom: 4,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     dateHeader: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#4C6DFF',
+        color: Colors.primary,
         fontFamily: 'Verdana, sans-serif',
     },
     eventContainer: {

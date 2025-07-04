@@ -1,4 +1,5 @@
 import {Text, View, StyleSheet, Linking} from 'react-native';
+import Colors from "@/constants/colors";
 
 export default function MapScreen() {
     return (
@@ -12,7 +13,7 @@ export default function MapScreen() {
             <Text style={styles.hyperlink} onPress={() => Linking.openURL(
                 'https://www.google.com/maps/d/u/1/edit?mid=1hD8WSa06ehuNVq2LHfiIEdiAWXkZkgI&ll=52.40112467974306%2C0.21628551215429503&z=9'
             )}>
-                Link to Google Map.
+                Link to Google Map
             </Text>
         </View>
     );
@@ -21,7 +22,7 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.white,
         paddingLeft: 10,
         paddingRight: 10,
         paddingTop: 20,
@@ -30,17 +31,12 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 18,
-        color: '#333',
+        color: Colors.textPrimary,
         marginBottom: 6,
     },
     hyperlink: {
         fontSize: 18,
-        color: '#003FFF',
+        color: Colors.primary,
         marginBottom: 6,
-    },
-    note: {
-        fontSize: 18,
-        color: '#666',
-        fontStyle: 'italic',
     },
 });

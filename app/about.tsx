@@ -1,4 +1,5 @@
 import {Text, View, StyleSheet} from 'react-native';
+import Colors from "@/constants/colors";
 
 export default function AboutScreen() {
     return (
@@ -26,7 +27,7 @@ export default function AboutScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.white,
         paddingLeft: 10,
         paddingRight: 10,
         paddingTop: 20,
@@ -35,12 +36,12 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 18,
-        color: '#333',
+        color: Colors.textPrimary,
         marginBottom: 6,
     },
     note: {
         fontSize: 18,
-        color: '#666',
+        color: Colors.textTertiary,
         fontStyle: 'italic',
     },
 });

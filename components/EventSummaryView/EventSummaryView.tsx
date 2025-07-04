@@ -9,6 +9,7 @@ import {
     dateFormatDDMonthYYYY,
     dateFormatHHMM
 } from "@/utils/dateFormats";
+import Colors from "@/constants/colors";
 
 interface props {
   eventData: EventSummary;
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
         marginBottom: 4,
         marginLeft: 4,
         marginRight: 4,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.white,
         borderRadius: 12,
 
     },
@@ -51,13 +52,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 8,
-        color: '#666',
+        color: Colors.textTertiary,
     },
     date: {
         fontSize: 14,
         fontWeight: 'bold',
         marginBottom: 6,
-        color: '#999',
+        color: Colors.textSecondary,
     },
     timeRow: {
         flexDirection: 'row',
@@ -67,12 +68,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         marginBottom: 6,
-        color: '#666',
+        color: Colors.textTertiary,
     },
     text: {
         fontSize: 14,
         marginBottom: 6,
-        color: '#333',
+        color: Colors.textPrimary,
         fontFamily: 'Verdana, sans-serif',
     },
 });

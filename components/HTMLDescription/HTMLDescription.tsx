@@ -1,6 +1,7 @@
 import React from 'react';
 import RenderHTML from 'react-native-render-html';
 import { Linking, useWindowDimensions } from 'react-native';
+import Colors from "@/constants/colors";
 
 
 interface props {
@@ -27,8 +28,7 @@ export default function HTMLDescription({htmlContent}: props) {
             }}
             tagsStyles={{
                 a: {
-                    color: 'blue',
-                    textDecorationLine: 'underline',
+                    color: Colors.primary,
                 },
             }}
             ignoredDomTags={['script', 'style', 'img']}

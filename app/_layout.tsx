@@ -5,6 +5,7 @@ import AboutIcon from "@/assets/icons/info-circle.svg";
 import CalendarIcon from "@/assets/icons/calendar.svg";
 import MapIcon from "@/assets/icons/geo-alt-fill.svg";
 import LogoIcon from "@/assets/icons/logo_inverse.svg";
+import Colors from "@/constants/colors";
 
 export default function RootLayout() {
     return (
@@ -16,27 +17,24 @@ export default function RootLayout() {
                             <LogoIcon width="48" height="48" marginRight="16" />
                         ),
                         headerStyle: {
-                            backgroundColor: '#4C6DFF',
+                            backgroundColor: Colors.primary,
                             elevation: 0, // Remove Android shadow
                             shadowColor: 'transparent', // Remove iOS shadow
                         },
                         headerTitleStyle: {
-                            color: '#fff',
+                            color: Colors.white,
                         },
                         headerTitleAlign: 'left',
                         drawerContentContainerStyle: {
                             paddingHorizontal: 0,
                         },
                         headerStatusBarHeight: 0,
-                        headerTintColor: '#fff',
-                        drawerActiveTintColor: '#4C6DFF',
-                        drawerInactiveTintColor: '#333',
+                        headerTintColor: Colors.white,
+                        drawerActiveTintColor: Colors.primary,
+                        drawerInactiveTintColor: Colors.textPrimary,
                         drawerItemStyle: {
                             borderRadius: 0,
                         },
-                        // drawerStyle: {
-                        //     width: '70%',
-                        // },
                         drawerLabelStyle: {
                             fontSize: 18,
                             fontFamily: 'Verdana, sans-serif',
@@ -82,16 +80,6 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#4C6DFF',
-    },
-    text: {
-        fontSize: 18,
-        color: '#fff',
-        marginBottom: 6,
-    },
-    note: {
-        fontSize: 18,
-        color: '#666',
-        fontStyle: 'italic',
+        backgroundColor: Colors.primary,
     },
 });

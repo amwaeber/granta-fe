@@ -5,7 +5,6 @@ import {
     StyleSheet,
     ActivityIndicator,
     ScrollView,
-    Dimensions,
     KeyboardAvoidingView,
     Platform, Pressable,
 } from 'react-native';
@@ -16,6 +15,7 @@ import {
     dateFormatDDMonthYYYY,
     dateFormatHHMM
 } from "@/utils/dateFormats";
+import Colors from "@/constants/colors";
 
 
 interface props {
@@ -23,9 +23,6 @@ interface props {
     visible: boolean;
     onClose: () => void;
 }
-
-const screenHeight = Dimensions.get('window').height;
-const MODAL_VERTICAL_MARGIN = 100;
 
 export default function EventDetailsModal({
                                               event,
@@ -51,7 +48,7 @@ export default function EventDetailsModal({
                             zIndex: 10,
                         }}
                     >
-                        <CloseIcon width={32} height={32} color='#ddd'/>
+                        <CloseIcon width={32} height={32} color={Colors.offWhite}/>
                     </Pressable>
                     {!event ? (<ActivityIndicator size="small" style={{margin: 10}}/>) : (
                         <View>
@@ -97,7 +94,7 @@ const styles = StyleSheet.create({
     },
     modalHeader: {
         justifyContent: 'flex-start',
-        backgroundColor: '#4C6DFF',
+        backgroundColor: Colors.primary,
         padding: 30,
         paddingTop: 40,
         paddingBottom: 10,
@@ -109,14 +106,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 8,
-        color: '#fff',
-        // maxWidth: '90%',
+        color: Colors.white,
     },
     date: {
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 6,
-        color: '#ddd',
+        color: Colors.offWhite,
     },
     timeRow: {
         flexDirection: 'row',
@@ -127,12 +123,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         marginBottom: 6,
-        color: '#ddd',
+        color: Colors.offWhite,
     },
     text: {
         fontSize: 14,
         marginBottom: 6,
-        color: '#333',
+        color: Colors.textPrimary,
         fontFamily: 'Verdana, sans-serif',
     },
 });
