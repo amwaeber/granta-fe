@@ -1,4 +1,4 @@
-import {Text, View, StyleSheet, Linking} from 'react-native';
+import {Text, View, StyleSheet, Linking, TouchableOpacity, Image} from 'react-native';
 import Colors from "@/constants/colors";
 
 export default function MapScreen() {
@@ -10,11 +10,19 @@ export default function MapScreen() {
                 for carving? Want indoor play areas for pent-up energy on a rainy day? Your child only chills when
                 watching animals? Then this map is for you!
             </Text>
-            <Text style={styles.hyperlink} onPress={() => Linking.openURL(
-                'https://www.google.com/maps/d/u/1/edit?mid=1hD8WSa06ehuNVq2LHfiIEdiAWXkZkgI&ll=52.40112467974306%2C0.21628551215429503&z=9'
-            )}>
-                Link to Google Map
-            </Text>
+            <TouchableOpacity
+                onPress={() =>
+                    Linking.openURL(
+                        "https://www.google.com/maps/d/u/1/edit?mid=1hD8WSa06ehuNVq2LHfiIEdiAWXkZkgI&ll=52.40112467974306%2C0.21628551215429503&z=9"
+                    )
+                }
+            >
+                <Image
+                    source={require("../assets/qr_codes/map.png")}
+                    style={{width: 250, height: 250}}
+                    resizeMode="contain"
+                />
+            </TouchableOpacity>
         </View>
     );
 }

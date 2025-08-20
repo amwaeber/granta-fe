@@ -1,9 +1,9 @@
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, ScrollView, StyleSheet, TouchableOpacity, Linking, Image} from 'react-native';
 import Colors from "@/constants/colors";
 
 export default function AboutScreen() {
     return (
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.text}>
                 We’re a small group of local volunteers, passionate about sharing useful tips and local knowledge with
                 fellow parents and carers. We also love supporting the work of local organisations - museums, charities,
@@ -13,6 +13,22 @@ export default function AboutScreen() {
                 Our recommendations come from chatting with other parents at the school gate, staying in the loop with
                 what’s happening around Cambridge, and trying things out with our own kids.
             </Text>
+            <Text style={styles.text}>
+                Have a look at our website for the online version:
+            </Text>
+            <TouchableOpacity
+                onPress={() =>
+                    Linking.openURL(
+                        "https://sites.google.com/view/cambridgefamilyevents"
+                    )
+                }
+            >
+                <Image
+                    source={require("../assets/qr_codes/website.png")}
+                    style={{width: 250, height: 250, alignSelf: "center"}}
+                    resizeMode="contain"
+                />
+            </TouchableOpacity>
             <Text style={styles.note}>
                 We don’t receive financial contributions from the organisations we feature. While we do our best to
                 highlight quality events and resources, not everything has been personally tested by us. We do our
@@ -20,13 +36,13 @@ export default function AboutScreen() {
                 visiting the organiser’s website before attending an event to check for updates or last-minute
                 cancellations.
             </Text>
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
         backgroundColor: Colors.white,
         paddingLeft: 10,
         paddingRight: 10,
